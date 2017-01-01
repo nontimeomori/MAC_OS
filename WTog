@@ -1,0 +1,53 @@
+//
+//  AppDelegate.swift
+//  WTog
+//
+//  Created by Joseph L. Moore on 8/29/15.
+//  Copyright (c) 2015 Joseph L. Moore. All rights reserved.
+//
+
+import Cocoa
+
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
+
+    @IBOutlet weak var window: NSWindow!
+    @IBOutlet weak var statusMenu: NSMenu!
+    
+    let statuItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
+
+    func applicationDidFinishLaunching(aNotification: NSNotification) {
+        
+        let icon = NSImage(named: "statusIcon")
+        icon?.setTemplate(true)
+        
+        statuItem.image = icon
+        statuItem.menu = statusMenu
+    }
+
+    @IBAction func menuOff(sender: NSMenuItem) {
+    
+        let task = NSTask()
+        task.launchPath = "/usr/sbin/networksetup"
+        task.arguments = ["setairportpower", "en1", "off"]
+        
+        let pipe = NSPipe()
+        task.standardOutput = pipe
+        task.launch()
+    
+    }
+
+    
+    @IBAction func menuOn(sender: NSMenuItem) {
+    
+        let task = NSTask()
+        task.launchPath = "/usr/sbin/networksetup"
+        task.arguments = ["setairportpower", "en1", "on"]
+        
+        let pipe = NSPipe()
+        task.standardOutput = pipe
+        task.launch()
+        
+    }
+    
+}
